@@ -15,3 +15,5 @@ Pressing the Bluetooth button on the top will allow the user to connect to the s
 The clock will have a companion app used to send various commands to the clock and manage alarms, connecting over Bluetooth
 ### Smart Display
 The Clock will feature a smart display at the front to give various information including time, current media, upcoming alarms, weather, and more
+### Google Assistant
+After getting everything else set up, I will try to implement the Google Assistant into the smart clock with a fun wake word

@@ -44,7 +44,7 @@ Alarm API to snooze or dismiss
 ## File System
 I will get this into GitHub eventually, but here is the file system layout
 
-
+```
 /home/bozrem/\
 ├── api/\
 │   ├── media_api.py\
@@ -77,3 +77,4 @@ I will get this into GitHub eventually, but here is the file system layout
 
 ~/\
 └── .xinitrc
+```
