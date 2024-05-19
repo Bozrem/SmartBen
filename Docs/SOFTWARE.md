@@ -30,8 +30,21 @@ Buttons service from physical button presses to dismiss or snooze alarms going o
 Web Interface to update the alarms widget on upcoming and current alarms
 
 ## Web Interface
-Upon boot, a script (~/.xinitrc) enables both hosting the local web server, and launching Chromium to Kiosk mode to display it. The interface uses the React framework to render individual independent widgets on a single dashboard\
-This functionality is a work in progress, as I've never dealt with web development before
+Upon boot, script ~/.xinitrc launches both the local web server and Chromium in Kiosk mode to display the dashboard\
+A WebSocket server, using Express and ws, handles real-time communication between the backend and React frontend. It broadcasts updates to the widgets when events occur in the system\
+The React application renders the widgets out on the dashboadrd. The widgets subscribe to the WebSocket server for updates.
+### Widgets
+Built as React components
+#### Clock
+Displays an updating digital clock with seconds, with a small am/pm next to it as well as date information below
+#### Weather
+Displays a small (100 by 100?) image or gif to represent the current weather, as well as temperature or other information below. //TODO find an online API where I can get this info
+#### Alarm
+Displays upcoming alarms and will blink something when an alarm is currently going off
+#### Calendar
+Syncs with Google Calendar to display my upcoming events
+#### Status
+Displays the status as a series of icons. Things like WiFi connectivity, Bluetooth, Volume, Google Assistant Status, etc.
 
 ## Services
 Either periodic or constantly running
@@ -45,36 +58,38 @@ Alarm API to snooze or dismiss
 I will get this into GitHub eventually, but here is the file system layout
 
 ```
-/home/bozrem/\
-├── api/\
-│   ├── media_api.py\
-│   ├── alarm_api.py\
-│   └── commands_api.py\
-├── web/\
-│   ├── public/\
-│   │   ├── css/\
-│   │   │   └── style.css\
-│   │   ├── js/\
-│   │   │   └── main.js\
-│   │   └── index.html\
-│   ├── server.py\
-│   ├── templates/\
-│   │   └── index.html\
-│   └── widgets/\
-│       ├── TimeWidget.js\
-│       ├── AlarmWidget.js\
-│       ├── WeatherWidget.js\
-│       ├── CalendarWidget.js\
-│       └── MicStatusWidget.js\
-├── services/\
-│   ├── button_service.py\
-│   └── wakeword.py\
-└── config/\
+/home/bozrem/
+├── api/
+│   ├── media_api.py
+│   ├── alarm_api.py
+│   └── commands_api.py
+├── web/
+│   ├── server/
+│   │   ├── index.js # WebSocket Server
+│   │   ├── package.json  # Node.js dependencies
+│   └── dashboard/
+│       ├── public/
+│       │   ├── index.html  # HTML entry point
+│       ├── src/
+│       │   ├── components/
+│       │   │   ├── ClockWidget.js
+│       │   │   ├── WeatherWidget.js
+│       │   │   ├── AlarmWidget.js
+│       │   │   ├── CalendarWidget.js
+│       │   │   ├── StatusWidget.js
+│       │   ├── App.js  # Main React component
+│       │   ├── App.css  # CSS for layout
+│       │   ├── index.js  # React entry point
+│       │   ├── package.json # React dependencies
+├── services/
+│   ├── button_service.py
+│   └── wakeword.py
+└── config/
     └── config.json
 
-/etc/systemd/system/\
+/etc/systemd/system/
 ├── dashboard.service
 
-~/\
+~/
 └── .xinitrc
 ```
