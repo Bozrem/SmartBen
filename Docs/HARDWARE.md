@@ -23,10 +23,9 @@ A cool feature I saw on some other high end alarm clocks was a light that slowly
 ## Buttons
 I mess around with keyboards, and I had some spare mechanical switches laying around. It should be as simple as connecting wires to GPIO pins through the switch to GND. Wires are ordered and on the way
 ### Configuration/Layout
-Button 1 (17): Click for Bluetooth Hold for Brightness adjust Clicking it toggles Bluetooth. If its off then turn it on ready to pair, if its on/connected disconnect and turn on. Detect that it has been held if its been down for more than 2 seconds or if another button was pressed while it was still down\
-Button 2 (27): Click for dismiss (will just toggle the 'currently going off' boolean in alarm logic or something) Click does a brightness down if button 1 is held\
-Button 3 (22): Click for snooze (toggle it like dismiss and reset the timer for 5 minutes from now. Don't implement this logic yet besides a comment) Click does a brightness up if button 1 is held.\
-Button 4 (23): Click for play/pause Hold for next track Hold in this case is only to hold for 2 seconds. Other buttons shouldn't do anything when button 4 is held.
+Button 1 (17): Click for pause/play or dismiss (if an alarm is active)
+Button 2 (27): Click to tell Media API to toggle Bluetooth connection
+Button 3 (22): Click for next song or snooze (if alarm is active)
 
 
 [1]: https://www.amazon.com/110-240V-Converter-Transformer-Compatible-5-5x2-1mm/dp/B0CPLQH2YP/ref=sr_1_5?crid=T0ZL9ZNGC65Q&dib=eyJ2IjoiMSJ9.rmoRR3N5w4LuqVPr1dgj5iD5eJfOvSjYX35IUVf99MH75j6IezYNj-AOGy_c2gaE2Aq_0jzmwcHKfT2FtYpg9OPDxkzMqHLT6XUDz_oHj4ZKfGeRs_pliWfX-bQPWgjxUYrFHDcAHC0_T_EHw4hQ-lBzIq5FaPIY9oIDOL57Vl_3ufPf5yDZlQqaCwd6S3sg65J7001lGvwvdcn0TDHTVWD9KAcJCQfRncQx8NHM2AUNvnTLXgW_20zCshmFON3oeUN8ezBxstw-Zhe4dirX7g-rcz32jaM8Z51pdzrLAAQ.Iten39j6UIQCnik-QxyJu6cvDRAvOoUJwWNSWR5MObI&dib_tag=se&keywords=12v+power+supply&qid=1715994382&refinements=p_n_feature_eight_browse-bin%3A41942721011&rnid=41941869011&s=electronics&sprefix=12v+%2Caps%2C121&sr=1-5

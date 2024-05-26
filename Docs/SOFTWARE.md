@@ -5,7 +5,8 @@ Most of my time has gone into designing the system architecture to make it easy 
 The biggest way that I'm modularizing the design is to write the different components as their own seperate Python scripts running as services that interact through HTTP requests
 
 ### Media API
-The Media API manages anything to do with what media is playing on the system. This could be media from alarms going off to media from a Bluetooth connection.
+The Media API manages anything to do with what media is playing on the system. This could be media from alarms going off to media from a Bluetooth connection.\
+In Bluetooth mode, volume is controled by whatever device connected to Ben (Ben just sits at 50%), but the Media API controls its own volume when playing on-device media like alarms
 #### Incoming requests:
 Commands API from app commands to pause/play, skip, etc.\
 Alarm API to play media for an alarm going off\
@@ -30,7 +31,7 @@ Buttons service from physical button presses to dismiss or snooze alarms going o
 Web Interface to update the alarms widget on upcoming and current alarms
 
 ## Web Interface
-Upon boot, script ~/.xinitrc launches both the local web server and Chromium in Kiosk mode to display the dashboard\
+Upon boot, part of the boot script launches both the local web server and Chromium in Kiosk mode to display the dashboard\
 A WebSocket server, using Express and ws, handles real-time communication between the backend and React frontend. It broadcasts updates to the widgets when events occur in the system\
 The React application renders the widgets out on the dashboadrd. The widgets subscribe to the WebSocket server for updates.
 ### Widgets
@@ -60,9 +61,13 @@ I will get this into GitHub eventually, but here is the file system layout
 ```
 /home/bozrem/
 ├── api/
-│   ├── media_api.py
-│   ├── alarm_api.py
-│   └── commands_api.py
+│   ├── alarm/
+│   │   ├── alarm.py
+│   │   ├── alarms.json
+│   ├── media/
+│   │   ├── media.py
+│   └── commands/
+│       ├── commands.py
 ├── web/
 │   ├── server/
 │   │   ├── index.js # WebSocket Server
@@ -83,13 +88,9 @@ I will get this into GitHub eventually, but here is the file system layout
 │       │   ├── package.json # React dependencies
 ├── services/
 │   ├── button_service.py
-│   └── wakeword.py
 └── config/
     └── config.json
 
 /etc/systemd/system/
-├── dashboard.service
-
-~/
-└── .xinitrc
+├── boot.service
 ```

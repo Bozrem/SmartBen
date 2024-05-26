@@ -40,7 +40,7 @@ class AlarmManager:
     def get_alarms(self):
         print("get called")
         try:
-            with open('alarms.json', 'r') as f:
+            with open('/home/bozrem/Projects/SmartBen/src/api/alarm/alarms.json', 'r') as f:
                 data = json.load(f)
             alarms = [Alarm.decode(alarm) for alarm in data]
             return alarms
@@ -51,7 +51,7 @@ class AlarmManager:
     def save_alarms(self, alarms):
         print("save called")
         try:
-            with open('alarms.json', 'w') as f:
+            with open('/home/bozrem/Projects/SmartBen/src/api/alarm/alarms.json', 'w') as f:
                 json.dump([alarm.encode() for alarm in alarms], f)
             self.schedule()
         except IOError as e:
@@ -63,9 +63,7 @@ class AlarmManager:
         if alarm.is_active():
             # Placeholder: Handle triggering the alarm (e.g., play media, update UI)
             print(f"Triggering alarm: {alarm.name}")
-        # Commented out for now to avoid saving and scheduling loop issues
-        # alarm.update_next_trigger_time()
-        # self.save_alarms(self.get_alarms())
+        
 
     def dismiss_alarm(self):
         if self.current_alarm:
@@ -125,11 +123,9 @@ def snooze_alarm_api():
 if __name__ == '__main__':
     app.run()
 
-# Potential Downfalls and Improvements:
-# 1. **Error Handling**: Improve error handling, especially in file I/O and JSON operations.
-# 2. **Scalability**: The current approach may not scale well with a large number of alarms.
-# 3. **Concurrency**: Ensure thread safety when accessing and modifying shared resources.
-# 4. **Configuration Management**: Externalize configurations (e.g., file paths) for better flexibility.
-# 5. **Testing**: Add unit tests and integration tests to ensure the reliability of the system.
-# 6. **Logging**: Implement logging instead of print statements for better monitoring and debugging.
-# 7. **Security**: Ensure API endpoints are secure, possibly with authentication and validation checks.
+# TODO
+# Feat. Repeatable Alarms
+# Fix. Limit Snoozes
+# Feat. Actual Trigger functionality with Media API
+# Feat. Improve logging output
+# Feat. Add endpoint to check for an active alarm
