@@ -24,7 +24,7 @@ A cool feature I saw on some other high end alarm clocks was a light that slowly
 I mess around with keyboards, and I had some spare mechanical switches laying around. It should be as simple as connecting wires to GPIO pins through the switch to GND. Wires are ordered and on the way
 ### Configuration/Layout
 Button 1 (17): Click for pause/play or dismiss (if an alarm is active)\
-Button 2 (27): Click to tell Media API to toggle Bluetooth connection\
+Button 2 (27): Click to tell Media API to toggle Bluetooth connection or begin pairing process if held\
 Button 3 (22): Click for next song or snooze (if alarm is active)
 
 

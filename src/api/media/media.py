@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-import subprocess, re
+import subprocess, re, os
 
 app = Flask(__name__)
 
@@ -173,6 +173,27 @@ def toggle_bluetooth():
             return jsonify({'status': 'Bluetooth turned on'})
     except subprocess.CalledProcessError as e:
         return jsonify({'status': 'error', 'message': f'Error toggling Bluetooth: {e}'})
+    
+def enable_bluetooth_pairing_mode():
+    try:
+        # Stop any existing instances of the agent script, ignoring errors if no process is found
+        subprocess.run(['pkill', '-f', 'bluetooth_agent.sh'], check=False)
+        
+        # Start the agent script in the background
+        script_path = os.path.abspath("bluetooth_agent.sh")
+        subprocess.Popen([script_path])
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"Error enabling Bluetooth pairing mode: {e}")
+        return False
+
+@app.route('/api/bluetooth/pairing_mode', methods=['POST'])
+def bluetooth_pairing_mode():
+    success = enable_bluetooth_pairing_mode()
+    if success:
+        return jsonify({'status': 'success', 'message': 'Bluetooth is now in pairing mode'})
+    else:
+        return jsonify({'status': 'error', 'message': 'Failed to enable Bluetooth pairing mode'})
 
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
