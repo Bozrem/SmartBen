@@ -103,25 +103,32 @@ def get_alarms_api():
     alarms = alarm_manager.get_alarms()
     return jsonify([alarm.encode() for alarm in alarms])
 
-@app.route('/alarms', methods=['POST'])
+@app.route('/api/alarms', methods=['POST'])
 def save_alarms_api():
     alarms_data = request.json
     alarms = [Alarm.decode(alarm) for alarm in alarms_data]
     alarm_manager.save_alarms(alarms)
     return 'Alarms updated', 200
 
-@app.route('/alarms/dismiss', methods=['POST'])
+@app.route('/api/alarms/dismiss', methods=['POST'])
 def dismiss_alarm_api():
     alarm_manager.dismiss_alarm()
     return 'Alarm dismissed', 200
 
-@app.route('/alarms/snooze', methods=['POST'])
+@app.route('/api/alarms/snooze', methods=['POST'])
 def snooze_alarm_api():
     alarm_manager.snooze_alarm()
     return 'Alarm snoozed', 200
 
+@app.route('/api/alarms/active', methods=['GET'])
+def is_alarm_active_api():
+    active_alarm = alarm_manager.current_alarm
+    if active_alarm and active_alarm.is_active():
+        return jsonify({"active": True, "alarm": active_alarm.encode()})
+    return jsonify({"active": False})
+
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5000)
 
 # TODO
 # Feat. Repeatable Alarms
