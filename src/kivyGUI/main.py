@@ -7,6 +7,7 @@ from kivy.uix.slider import Slider
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
+from kivy.config import ConfigParser
 from widgets.status.status_bar import StatusBar
 from widgets.time.time_display import TimeDisplay
 from widgets.weather.weather_display import WeatherDisplay, WeatherScreen
@@ -30,6 +31,16 @@ class MainScreen(Screen):
 
 class SmartBen(App):
     def build(self):
+        self.config = ConfigParser()
+        self.config.read('src/kivyGUI/style.ini')
+
+        self.background_color = [float(x) for x in self.config.get('colors', 'background_color').split(',')]
+        self.text_color = [float(x) for x in self.config.get('colors', 'text_color').split(',')]
+        self.large_font_size = self.config.get('fonts', 'large_font_size')
+        self.medium_font_size = self.config.get('fonts', 'medium_font_size')
+        self.small_font_size = self.config.get('fonts', 'small_font_size')
+
+
         Builder.load_file('SmartBen.kv')
         Builder.load_file('src/kivyGUI/widgets/weather/weather_display.kv')
         Builder.load_file('src/kivyGUI/widgets/time/time_display.kv')
