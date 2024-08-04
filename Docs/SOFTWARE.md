@@ -8,24 +8,14 @@ The biggest way that I'm modularizing the design is to write the different compo
 The Media API manages anything to do with what media is playing on the system. This could be media from alarms going off to media from a Bluetooth connection.\
 In Bluetooth mode, volume is controled by whatever device connected to Ben (Ben just sits at 50%), but the Media API controls its own volume when playing on-device media like alarms
 #### Incoming requests:
-Commands API from app commands to pause/play, skip, etc.\
 Alarm API to play media for an alarm going off\
 Buttons service for physical button presses for media control and Bluetooth enabling\
 #### Outgoing requests:
 Web Interface to update the media widget with what is currently playing
 
-### Commands API
-The Commands API manages all incoming requests from the phone app over Bluetooth
-#### Incoming requests:
-None
-#### Outgoing requests:
-Media API to update media status\
-Alarm API to set, cancel, enable, or delete alarms
-
 ### Alarm API
 The Alarm API manages all alarms on the system. It keeps track of the status of each one and sends signals to other APIs when one needs to go off
 #### Incoming requests:
-Commands API from app commands to set, cancel, enable, or delete alarms\
 Buttons service from physical button presses to dismiss or snooze alarms going off\
 #### Outgoing requests:
 Web Interface to update the alarms widget on upcoming and current alarms
@@ -56,7 +46,7 @@ Media API for media playback control and Bluetooth mode toggle
 Alarm API to snooze or dismiss
 
 ## File System
-I will get this into GitHub eventually, but here is the file system layout
+I will get this all into GitHub eventually, but here is the file system layout
 
 ```
 /home/bozrem/
@@ -64,10 +54,8 @@ I will get this into GitHub eventually, but here is the file system layout
 │   ├── alarm/
 │   │   ├── alarm.py
 │   │   ├── alarms.json
-│   ├── media/
-│   │   ├── media.py
-│   └── commands/
-│       ├── commands.py
+│   └── media/
+│       └── media.py
 ├── web/
 │   ├── server/
 │   │   ├── index.js # WebSocket Server

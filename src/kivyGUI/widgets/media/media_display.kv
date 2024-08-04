@@ -1,0 +1,22 @@
+<MediaDisplay>:
+    BoxLayout:
+        canvas.before:
+            Color:
+                rgba: 0, 20/255, 50/255, 1  # Adjust the alpha value for transparency
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Button:
+            background_color: 0, 0, 0, 0
+            size_hint: (1, 1)
+            text: "Go to Media Screen"
+            on_release: app.root.current = 'media_screen'
+
+<MediaScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'This is the media screen'
+        Button:
+            text: 'Back to Main Screen'
+            on_release: app.root.current = 'main'

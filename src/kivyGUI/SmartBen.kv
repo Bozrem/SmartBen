@@ -1,0 +1,22 @@
+<MainScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0, 20/255, 50/225, 1  # background color
+
+        StatusBar:
+            id: status_bar
+            size_hint_y: .1
+        
+        TimeDisplay:
+            size_hint_y: .45
+        
+        BoxLayout:
+            size_hint_y: .4
+                
+            MediaDisplay:
+                size_hint_x: 0.5
+            
+            AlarmDisplay:
+                size_hint_x: 0.5

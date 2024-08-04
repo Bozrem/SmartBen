@@ -1,0 +1,22 @@
+<TimeDisplay>:
+    BoxLayout:
+        canvas.before:
+            Color:
+                rgba: 0, 20/255, 50/255, 1  # Adjust the alpha value for transparency
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Button:
+            background_color: 0, 0, 0, 0
+            size_hint: (1, 1)
+            text: "Go to Time Screen"
+            on_release: app.root.current = 'time_screen'
+
+<TimeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'This is the time screen'
+        Button:
+            text: 'Back to Main Screen'
+            on_release: app.root.current = 'main'

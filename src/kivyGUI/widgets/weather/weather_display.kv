@@ -1,0 +1,14 @@
+<WeatherDisplay>:
+    Button:
+        size_hint: (1, 1)
+        text: "Weather: 69 and Sunny"
+        on_release: app.root.current = 'weather_screen'
+
+<WeatherScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'This is the weather screen'
+        Button:
+            text: 'Back to Main Screen'
+            on_release: app.root.current = 'main'

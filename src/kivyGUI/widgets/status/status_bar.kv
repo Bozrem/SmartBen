@@ -1,0 +1,52 @@
+<StatusBar>:
+    canvas.before:
+        Color:
+            rgba: 0, 20/255, 50/255, 1  # Adjust the alpha value for transparency
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    orientation: 'horizontal'
+    size_hint_y: 0.1
+
+    StackLayout:
+        id: left_box
+        orientation: 'lr-tb'
+        size_hint_x: 0.3
+
+    BoxLayout:
+        id: center_box
+        orientation: 'horizontal'
+        size_hint_x: 0.4
+
+    StackLayout:
+        id: right_box
+        orientation: 'rl-tb'
+        size_hint_x: 0.3
+
+<VolumeWidget@Button>:
+    background_color: 0, 0, 0, 0
+    text: 'Vol'
+    size_hint_x: .33
+    on_release: app.show_volume_popup()
+
+<BrightnessWidget@Button>:
+    background_color: 0, 0, 0, 0
+    text: 'Bri'
+    size_hint_x: .33
+    on_release: app.show_brightness_popup()
+
+<BluetoothWidget@Button>:
+    background_color: 0, 0, 0, 0
+    text: 'BT'
+    size_hint_x: .33
+
+<SettingsWidget@Button>:   
+    background_color: 0, 0, 0, 0
+    text: 'Set'
+    size_hint_x: .33
+
+<WeatherWidget@Button>:
+    background_color: 0, 0, 0, 0
+    size_hint: (1, 1)
+    text: "Weather: 69 and Sunny"
+    on_release: app.root.current = 'weather_screen'
