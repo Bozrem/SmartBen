@@ -8,13 +8,13 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from widgets.status.status_bar import StatusBar
-from widgets.time.time_display import TimeDisplay, TimeScreen
+from widgets.time.time_display import TimeDisplay
 from widgets.weather.weather_display import WeatherDisplay, WeatherScreen
 from widgets.alarm.alarm_display import AlarmDisplay, AlarmScreen
 from widgets.media.media_display import MediaDisplay, MediaScreen
 
-
 Window.borderless = True
+Window.size = (800, 480)
 
 class MainScreen(Screen):
     def on_enter(self):
@@ -30,7 +30,6 @@ class MainScreen(Screen):
 
 class SmartBen(App):
     def build(self):
-        # Load the KV files
         Builder.load_file('SmartBen.kv')
         Builder.load_file('src/kivyGUI/widgets/weather/weather_display.kv')
         Builder.load_file('src/kivyGUI/widgets/time/time_display.kv')
@@ -38,24 +37,20 @@ class SmartBen(App):
         Builder.load_file('src/kivyGUI/widgets/media/media_display.kv')
         Builder.load_file('src/kivyGUI/widgets/status/status_bar.kv')
 
-        
         sm = ScreenManager()
         sm.add_widget(MainScreen(name='main'))
         sm.add_widget(WeatherScreen(name='weather_screen'))
-        sm.add_widget(TimeScreen(name='time_screen'))
         sm.add_widget(AlarmScreen(name='alarm_screen'))
         sm.add_widget(MediaScreen(name='media_screen'))
 
-        
         return sm
     
     def show_volume_popup(self):
-        # TODO make more consise
         layout = BoxLayout(orientation='vertical')
         layout.add_widget(Label(text='Volume'))
         slider = Slider(min=0, max=100, value=50)
         layout.add_widget(slider)
-        close_button = Button(text='Close', size_hint_y=0.2)
+        close_button = Button(text='Close', size_hint_y=0.25)
         layout.add_widget(close_button)
 
         slider.bind(value=self.on_volume_change)
@@ -65,12 +60,11 @@ class SmartBen(App):
         popup.open()
 
     def show_brightness_popup(self):
-        # TODO make more consise
         layout = BoxLayout(orientation='vertical')
         layout.add_widget(Label(text='Brightness'))
         slider = Slider(min=0, max=100, value=50)
         layout.add_widget(slider)
-        close_button = Button(text='Close', size_hint_y=0.2)
+        close_button = Button(text='Close', size_hint_y=0.25)
         layout.add_widget(close_button)
 
         slider.bind(value=self.on_brightness_change)
