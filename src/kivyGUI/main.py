@@ -86,11 +86,11 @@ class SmartBen(App):
 
     def on_volume_change(self, instance, value):
         print(f"Volume changed to {value}%")
-        # TODO
+        # TODO integrate with APIs
 
     def on_brightness_change(self, instance, value):
         print(f"Brightness changed to {value}%")
-        # TODO
+        # TODO add command to change this
 
 if __name__ == '__main__':
     SmartBen().run()
