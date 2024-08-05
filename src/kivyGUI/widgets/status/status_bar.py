@@ -1,5 +1,7 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.factory import Factory
+from kivy.uix.image import Image
+from kivy.uix.behaviors import ButtonBehavior
 
 class StatusBar(BoxLayout):
     def __init__(self, **kwargs):
@@ -23,3 +25,6 @@ class StatusBar(BoxLayout):
 
     def create_widget(self, widget_name):
         return Factory.get(widget_name)()
+    
+    class ClickableImage(ButtonBehavior, Image):
+        pass

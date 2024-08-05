@@ -10,61 +10,55 @@
 
     StackLayout:
         id: left_box
+        padding: 5
         orientation: 'lr-tb'
-        size_hint_x: 0.3
+        size_hint_x: 0.25
 
     BoxLayout:
         id: center_box
         orientation: 'horizontal'
-        size_hint_x: 0.4
+        size_hint_x: 0.5
 
     StackLayout:
         id: right_box
+        padding: 5
         orientation: 'rl-tb'
-        size_hint_x: 0.3
+        size_hint_x: 0.25
 
-<VolumeWidget@Button>:
+#<VolumeWidget@Button>:
+#    size_hint_x: .33
+#    on_release: app.show_volume_popup()
+#    background_color: 0, 0, 0, 0  # Transparent
+#    Image:
+#        id: volume_icon
+#        source: 'assets/icons/volume/volume_high.png' 
+#        size: self.parent.width-5, self.parent.height-5
+#        center: self.parent.center
+
+<VolumeWidget@ClickableImage>:
     size_hint_x: .33
+    id: volume_icon
+    source: 'assets/icons/volume/high.png' 
+
     on_release: app.show_volume_popup()
-    background_color: 0, 0, 0, 0  # Transparent
-    Image:
-        id: volume_icon
-        source: 'assets/icons/volume/volume_high.png' 
-        size: self.parent.width-5, self.parent.height-5
-        center: self.parent.center
 
-<BrightnessWidget@Button>:
+<BrightnessWidget@ClickableImage>:
     size_hint_x: .33
+    id: brightness_icon
+    source: 'assets/icons/brightness/brightness.png' 
+
     on_release: app.show_brightness_popup()
-    background_color: 0, 0, 0, 0  # Transparent
-    Image:
-        id: brightness_icon
-        source: 'assets/icons/brightness/brightness.png' 
-        size: self.parent.width-5, self.parent.height-5
-        center: self.parent.center
 
-<BluetoothWidget@Button>:
+<BluetoothWidget@ClickableImage>:
     size_hint_x: .33
-    # Add Bluetooth Menu
-    background_color: 0, 0, 0, 0  # Transparent
-    Image:
-        id: bluetooth_icon
-        source: 'assets/icons/bluetooth/bluetooth.png' 
-        size: self.parent.width-5, self.parent.height-5
-        center: self.parent.center
+    id: bluetooth_icon
+    source: 'assets/icons/bluetooth/bluetooth.png' 
 
-<SettingsWidget@Button>:
+    #on_release: TODO
+
+<SettingsWidget@ClickableImage>:
     size_hint_x: .33
-    # Add Settings Screen
-    background_color: 0, 0, 0, 0  # Transparent
-    Image:
-        id: settings_icon
-        source: 'assets/icons/settings/settings.png' 
-        size: self.parent.width-5, self.parent.height-5
-        center: self.parent.center
+    id: bluetooth_icon
+    source: 'assets/icons/settings/settings.png' 
 
-<WeatherWidget@Button>:
-    background_color: 0, 0, 0, 0 # Transparent
-    size_hint: (1, 1)
-    text: "Weather: 69 and Sunny" # Placeholder
-    on_release: app.root.current = 'weather_screen'
+    #on_release: TODO

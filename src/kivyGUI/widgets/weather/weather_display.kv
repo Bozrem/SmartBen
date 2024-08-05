@@ -1,8 +1,13 @@
-<WeatherDisplay>:
-    Button:
-        size_hint: (1, 1)
-        text: "Weather: 69 and Sunny"
-        on_release: app.root.current = 'weather_screen'
+<WeatherWidget>:
+    orientation: 'horizontal'
+    padding: 10
+    spacing: 10
+    on_press:
+        app.root.current = 'weather_screen'
+    Label:
+        text: "test"
+    Label:
+        text: "test 2"
 
 <WeatherScreen>:
     BoxLayout:

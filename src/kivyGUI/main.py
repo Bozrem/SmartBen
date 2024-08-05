@@ -10,7 +10,7 @@ from kivy.uix.button import Button
 from kivy.config import ConfigParser
 from widgets.status.status_bar import StatusBar
 from widgets.time.time_display import TimeDisplay
-from widgets.weather.weather_display import WeatherDisplay, WeatherScreen
+from widgets.weather.weather_display import WeatherScreen
 from widgets.alarm.alarm_display import AlarmDisplay, AlarmScreen
 from widgets.media.media_display import MediaDisplay, MediaScreen
 
@@ -23,9 +23,9 @@ class MainScreen(Screen):
         widget_info = [
             {'name': 'VolumeWidget', 'position': 'left'},
             {'name': 'BrightnessWidget', 'position': 'left'},
-            {'name': 'BluetoothWidget', 'position': 'left'},
             {'name': 'WeatherWidget', 'position': 'center'},
             {'name': 'SettingsWidget', 'position': 'right'},
+            {'name': 'BluetoothWidget', 'position': 'right'},
         ]
         status_bar.update_widgets(widget_info)
 
@@ -39,7 +39,6 @@ class SmartBen(App):
         self.large_font_size = self.config.get('fonts', 'large_font_size')
         self.medium_font_size = self.config.get('fonts', 'medium_font_size')
         self.small_font_size = self.config.get('fonts', 'small_font_size')
-
 
         Builder.load_file('SmartBen.kv')
         Builder.load_file('src/kivyGUI/widgets/weather/weather_display.kv')
