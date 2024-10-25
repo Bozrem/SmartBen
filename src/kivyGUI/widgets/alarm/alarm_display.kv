@@ -9,14 +9,94 @@
         Button:
             background_color: 0, 0, 0, 0 # Transparent
             size_hint: (1, 1)
-            text: "Go to Alarm Screen"
+            text: "Go to Alarm Screen" 
             on_release: app.root.current = 'alarm_screen'
 
 <AlarmScreen>:
-    BoxLayout:
+    BoxLayout: # Split status bar from rest
+        canvas.before:
+            Color:
+                rgba: app.background_color
+            Rectangle:
+                pos: self.pos
+                size: self.size
         orientation: 'vertical'
+
+        StatusBar:
+            id: status_bar
+            size_hint_y: .1
+
+        BoxLayout: # Split down the middle between selector and editor
+            orientation: 'horizontal'
+            
+            BoxLayout: # Left half: Alarm Selector
+                orientation: 'vertical'
+                size_hint_x: .6
+
+                BoxLayout: # Header bar at the top of selector half
+                    size_hint_y: .1
+                    orientation: 'horizontal'
+                    # Header with add button
+                    Label: 
+                        size_hint_x: .9
+                        text: "Next alarm in 3 hours 16 minutes"
+                    ImgBtn:
+                        size_hint_y: 1
+                        on_release: root.add_alarm()
+                        background_color: 0, 0, 0, 0  # Transparent
+                        id: plus_icon
+                        source: 'assets/icons/control/add_light.png' 
+
+                RecycleView: # Scrolling selector
+                    id: alarm_list
+                    viewclass: 'AlarmItemWidget'
+                    size_hint_y: 0.9
+                    RecycleBoxLayout:
+                        default_size: None, dp(56)
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: 'vertical'
+
+            BoxLayout:  # Right half: Alarm editor
+                padding: 15
+                size_hint_x: .4
+                orientation: 'vertical'
+                Label:
+                    text: 'Edit Alarm'
+                    size_hint_y: None
+                    height: dp(40)
+                TextInput:
+                    id: alarm_name
+                    hint_text: 'Alarm Name'
+                TextInput:
+                    id: alarm_time
+                    hint_text: 'Alarm Time'
+                Switch:
+                    id: alarm_repeat
+                    active: False
+                    text: 'Repeat'
+                TextInput:
+                    id: alarm_sound
+                    hint_text: 'Alarm Sound'
+                Button:
+                    text: 'Save Alarm'
+                    #on_release: root.save_alarm()
+
+<AlarmItemWidget@Button>:
+    on_release: app.root.current_screen.load_alarm(self)
+    BoxLayout:
+        orientation: 'horizontal'
         Label:
-            text: 'This is the alarm screen'
-        Button:
-            text: 'Back to Main Screen'
-            on_release: app.root.current = 'main'
+            text: root.alarm_name
+            size_hint_x: 0.6
+        Label:
+            text: root.alarm_time
+            size_hint_x: 0.3
+        CheckBox:
+            active: root.alarm_repeat
+            size_hint_x: 0.1
+
+<ImgBtn>:
+    size_hint: None, None
+    size: 100, 100  # Adjust size as needed

@@ -63,6 +63,16 @@
         size: self.parent.width-5, self.parent.height-5
         center: self.parent.center
 
+<BackWidget@Button>:
+    size_hint_x: .33
+    on_release: app.root.current = 'main'
+    background_color: 0, 0, 0, 0  # Transparent
+    Image:
+        id: settings_icon
+        source: 'assets/icons/control/back_light.png' 
+        size: self.parent.width-5, self.parent.height-5
+        center: self.parent.center
+
 <WeatherWidget@Button>:
     background_color: 0, 0, 0, 0 # Transparent
     size_hint: (1, 1)
