@@ -47,16 +47,19 @@
                         id: plus_icon
                         source: 'assets/icons/control/add_light.png' 
 
-                RecycleView: # Scrolling selector
+                RecycleView:  # Scrolling selector
                     id: alarm_list
                     viewclass: 'AlarmItemWidget'
                     size_hint_y: 0.9
                     RecycleBoxLayout:
-                        default_size: None, dp(56)
+                        default_size: None, dp(70)
                         default_size_hint: 1, None
                         size_hint_y: None
                         height: self.minimum_height
                         orientation: 'vertical'
+                        spacing: dp(10)  # Add spacing between items
+                        padding: dp(10)  # Add padding around the list
+
 
             BoxLayout:  # Right half: Alarm editor
                 padding: 15
@@ -83,20 +86,27 @@
                     text: 'Save Alarm'
                     #on_release: root.save_alarm()
 
-<AlarmItemWidget@Button>:
-    on_release: app.root.current_screen.load_alarm(self)
-    BoxLayout:
-        orientation: 'horizontal'
-        Label:
-            text: root.alarm_name
-            size_hint_x: 0.6
-        Label:
-            text: root.alarm_time
-            size_hint_x: 0.3
-        CheckBox:
-            active: root.alarm_repeat
-            size_hint_x: 0.1
+<AlarmItemWidget@BoxLayout>:
+    orientation: 'horizontal'
+    padding: 5
+    Label:
+        text: root.alarm_name
+        size_hint_x: 0.5 
+        color: app.text_color
+        font_size: app.small_font_size
+    Label:
+        text: root.alarm_time
+        size_hint_x: 0.3
+        color: app.text_color
+        font_size: app.small_font_size
+    Button:
+        text: "Edit"
+        size_hint_x: 0.2
+        on_release: root.load_alarm(self)
+        color: app.text_color
+        font_size: app.small_font_size
 
+        
 <ImgBtn>:
     size_hint: None, None
-    size: 100, 100  # Adjust size as needed
+    size: 75, 75  # Adjust size as needed
