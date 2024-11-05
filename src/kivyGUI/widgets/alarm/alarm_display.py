@@ -4,8 +4,10 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.image import Image
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.properties import StringProperty, BooleanProperty
+from kivy.properties import StringProperty, BooleanProperty, ObjectProperty
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
+from kivy.uix.textinput import TextInput
+from kivy.uix.popup import Popup
 import json
 
 class AlarmDisplay(BoxLayout):
@@ -41,38 +43,38 @@ class AlarmItem:
         pass # Will turn itself back into the json format for storage
 
     def to_widget(self):
-        # Create an AlarmItemWidget initialized with this alarm's data
         return {
             'alarm_name': self.name,
             'alarm_time': self.time,
-            'alarm_repeat': self.repeat
+            'alarm_repeat': self.repeat,
+            'alarm_item': self  # Reference to the AlarmItem instance itself
         }
-        # Create and return a new AlarmItemWidget that can be added to the recycle layout
+
+    def edit_alarm(self, refresh_callback):
+        editor = EditorPopup(self, refresh_callback=refresh_callback)
+        editor.open()
     
 
 class AlarmItemWidget(RecycleDataViewBehavior, BoxLayout):
+    alarm_item = ObjectProperty()  # Holds the associated AlarmItem instance
     alarm_name = StringProperty()
     alarm_time = StringProperty()
     alarm_repeat = BooleanProperty()
 
+
 class AlarmScreen(Screen):
     def on_enter(self):
         self.AlarmList = []
-        status_bar = self.ids.status_bar
-        widget_info = [{'name': 'BackWidget', 'position': 'left'}]
-        status_bar.update_widgets(widget_info)
 
         self.load_alarm_list()
-        for alarm in self.AlarmList:
-            print(alarm) # debugging
         self.load_widgets()
 
         
     def load_widgets(self):
-        rView = self.ids.alarm_list
-        rView.data = []
-        for alarm in self.AlarmList:
-            rView.data.append(alarm.to_widget())
+        self.ids.alarm_list.data = [item.to_widget() for item in self.AlarmList]
+
+    def open_editor(self, alarm_item):
+        alarm_item.edit_alarm(refresh_callback=self.load_widgets)
     
     def add_alarm(self):
         pass
@@ -87,10 +89,6 @@ class AlarmScreen(Screen):
             alarm = AlarmItem.from_json(jsonItem)
             self.AlarmList.append(alarm)
 
-    def update_alarm_data(self, alarm_item):
-        # Placeholder for API update
-        pass
-
 class ImgBtn(ButtonBehavior, Image):
     def __init__(self, on_release=None, **kwargs):
         super(ImgBtn, self).__init__(**kwargs)
@@ -99,3 +97,24 @@ class ImgBtn(ButtonBehavior, Image):
     def on_release(self):
         if self.on_release_callback:
             self.on_release_callback()  # Call the stored function
+
+class EditorPopup(Popup):
+    alarm_item = ObjectProperty(None)  # Reference to the alarm item being edited
+    refresh_callback = ObjectProperty(None)  # Callback to refresh the list
+
+    def __init__(self, alarm_item, refresh_callback, **kwargs):
+        super().__init__(**kwargs)
+        self.alarm_item = alarm_item
+        self.refresh_callback = refresh_callback
+        self.update_inputs()
+
+    def update_inputs(self):
+        self.ids.name_input.text = self.alarm_item.name
+        self.ids.time_input.text = self.alarm_item.time
+
+    def save_changes(self):
+        self.alarm_item.name = self.ids.name_input.text
+        self.alarm_item.time = self.ids.time_input.text
+        if self.refresh_callback:
+            self.refresh_callback()  # Call the refresh callback to update the display
+        self.dismiss()

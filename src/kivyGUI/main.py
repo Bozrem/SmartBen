@@ -57,31 +57,12 @@ class SmartBen(App):
         return sm
     
     def show_volume_popup(self):
-        layout = BoxLayout(orientation='vertical')
-        layout.add_widget(Label(text='Volume'))
-        slider = Slider(min=0, max=100, value=50)
-        layout.add_widget(slider)
-        close_button = Button(text='Close', size_hint_y=0.25)
-        layout.add_widget(close_button)
-
-        slider.bind(value=self.on_volume_change)
-        
-        popup = Popup(title='Volume Control', content=layout, size_hint=(0.8, 0.4))
-        close_button.bind(on_release=popup.dismiss)
+        popup = VolumePopup()
         popup.open()
 
+    # Method to show brightness popup
     def show_brightness_popup(self):
-        layout = BoxLayout(orientation='vertical')
-        layout.add_widget(Label(text='Brightness'))
-        slider = Slider(min=0, max=100, value=50)
-        layout.add_widget(slider)
-        close_button = Button(text='Close', size_hint_y=0.25)
-        layout.add_widget(close_button)
-
-        slider.bind(value=self.on_brightness_change)
-        
-        popup = Popup(title='Brightness Control', content=layout, size_hint=(0.8, 0.4))
-        close_button.bind(on_release=popup.dismiss)
+        popup = BrightnessPopup()
         popup.open()
 
     def on_volume_change(self, instance, value):
@@ -91,6 +72,12 @@ class SmartBen(App):
     def on_brightness_change(self, instance, value):
         print(f"Brightness changed to {value}%")
         # TODO add command to change this
+
+class VolumePopup(Popup):
+    pass
+
+class BrightnessPopup(Popup):
+    pass
 
 if __name__ == '__main__':
     SmartBen().run()
