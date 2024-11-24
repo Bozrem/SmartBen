@@ -62,54 +62,238 @@
 
 <AlarmItemWidget@BoxLayout>:
     orientation: 'horizontal'
-    padding: 5
+    padding: 10
+    spacing: 10
     Label:
         text: root.alarm_name
-        size_hint_x: 0.5 
+        size_hint_x: 0.25
         color: app.text_color
         font_size: app.small_font_size
     Label:
         text: root.alarm_time
-        size_hint_x: 0.3
+        size_hint_x: 0.25
         color: app.text_color
         font_size: app.small_font_size
+    # Letters total a .28 size hint x
+    Label:
+        text: "S"
+        id: sunday
+        font_size: app.small_font_size
+        color: root.active_color if root.sunday_active else root.inactive_color
+        size_hint_x: .04
+    Label:
+        text: "M"
+        id: monday
+        font_size: app.small_font_size
+        color: root.active_color if root.monday_active else root.inactive_color
+        size_hint_x: .04
+    Label:
+        text: "T"
+        id: tuesday
+        font_size: app.small_font_size
+        color: root.active_color if root.tuesday_active else root.inactive_color
+        size_hint_x: .04
+    Label:
+        text: "W"
+        id: wednesday
+        font_size: app.small_font_size
+        color: root.active_color if root.wednesday_active else root.inactive_color
+        size_hint_x: .04
+    Label:
+        text: "T"
+        id: thursday
+        font_size: app.small_font_size
+        color: root.active_color if root.thursday_active else root.inactive_color
+        size_hint_x: .04
+    Label:
+        text: "F"
+        id: friday
+        font_size: app.small_font_size
+        color: root.active_color if root.friday_active else root.inactive_color
+        size_hint_x: .04
+    Label:
+        text: "S"
+        id: saturday
+        font_size: app.small_font_size
+        color: root.active_color if root.saturday_active else root.inactive_color
+        size_hint_x: .04
+    Switch:
+        id: enabled
+        size_hint_x: .1
+        active: root.alarm_enabled  # Bind to the alarm_enabled property
+        on_active: root.toggle_enabled(self.active)  # Call toggle_enabled when switch state changes
     Button:
         text: "Edit"
-        size_hint_x: 0.2
+        size_hint_x: 0.1
         on_release: app.root.get_screen('alarm_screen').open_editor(self.parent.alarm_item)
         color: app.text_color
         font_size: app.small_font_size
 
 <EditorPopup@Popup>:
-    title: 'Edit Alarm'
-    size_hint: 0.8, 0.4
+    title: 'Loading Title'
+    size_hint: 0.95, 0.9
     BoxLayout:
-        orientation: 'vertical'
+        orientation: 'horizontal'
         padding: 10
         spacing: 10
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_x: .7
+            # Time and other
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: .6
+                Label:
+                    text: "Time Selection"
+                # Time section
+            
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: .4
+                # Media Selection
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_x: .5
+                    # Text and Switches
+                    Label:
+                        size_hint_y: .4
+                        text: "Media Selected:\n"
+                        id: media_selected_label
+                        color: app.text_color
+                        font_size: app.small_font_size
+                    
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: .6
+                        # Switches for light and volume control
+                        BoxLayout:
+                            padding: 10
+                            orientation: 'vertical'
+                            size_hint_x: .45
+                            # Volume Switch with Label
+                            Label:
+                                size_hint_y: .5
+                                text: "Volume"
+                                color: app.text_color
+                                font_size: app.small_font_size
+                            Switch:
+                                size_hint_y: .5
+                                id: volume_switch
+                        BoxLayout:
+                            orientation: 'vertical'
+                            size_hint_x: .1
+                            # Making space because I'm too lazy to figure out how padding works for the switches
+                        BoxLayout:
+                            padding: 10
+                            orientation: 'vertical'
+                            size_hint_x: .45
+                            # Light Switch with Label
+                            Label:
+                                size_hint_y: .5
+                                text: "Light"
+                                color: app.text_color
+                                font_size: app.small_font_size
+                            Switch:
+                                size_hint_y: .5
+                                id: light_switch
+                        
+                RecycleView:
+                    id: media_list
+                    viewclass: 'SelectableLabel'
+                    size_hint_x: .5
+                    RecycleBoxLayout:
+                        default_size: None, dp(50)
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: 'vertical'
+                        spacing: dp(10)  # Add spacing between items
+                        padding: dp(10)  # Add padding around the list
+                
         
         BoxLayout:
-            orientation: 'horizontal'
-            Label:
-                text: 'Name:'
-            TextInput:
-                id: name_input
-                multiline: False
+            # Repeat Switch, Day Buttons, Save Buttons
+            size_hint_x: .3
+            orientation: 'vertical'
 
-        BoxLayout:
-            orientation: 'horizontal'
-            Label:
-                text: 'Time:'
-            TextInput:
-                id: time_input
-                multiline: False
-
-        Button:
-            text: 'Save Changes'
-            size_hint_y: 0.3
-            on_release: root.save_changes()
+            BoxLayout:
+                size_hint_y: .115
+                orientation:'horizontal'
+                Label:
+                    text: "Repeat"
+                    color: app.text_color
+                    font_size: app.small_font_size
+                Switch:
+                    id: repeat_switch
+            Button:
+                text: "Sunday"
+                id: sunday_button
+                size_hint_y: .11
+                color: root.active_color if root.sunday_active else root.inactive_color
+                font_size: app.small_font_size
+                on_release: root.toggle_day('sunday_button')
+            Button:
+                text: "Monday"
+                id: monday_button
+                size_hint_y: .11
+                color: root.active_color if root.monday_active else root.inactive_color
+                font_size: app.small_font_size
+                on_release: root.toggle_day('monday_button')
+            Button:
+                text: "Tuesday"
+                id: tuesday_button
+                size_hint_y: .11
+                color: root.active_color if root.tuesday_active else root.inactive_color
+                font_size: app.small_font_size
+                on_release: root.toggle_day('tuesday_button')
+            Button:
+                text: "Wednesday"
+                id: wednesday_button
+                size_hint_y: .11
+                color: root.active_color if root.wednesday_active else root.inactive_color
+                font_size: app.small_font_size
+                on_release: root.toggle_day('wednesday_button')
+            Button:
+                text: "Thursday"
+                id: thursday_button
+                size_hint_y: .11
+                color: root.active_color if root.thursday_active else root.inactive_color
+                font_size: app.small_font_size
+                on_release: root.toggle_day('thursday_button')
+            Button:
+                text: "Friday"
+                id: friday_button
+                size_hint_y: .11
+                color: root.active_color if root.friday_active else root.inactive_color
+                font_size: app.small_font_size
+                on_release: root.toggle_day('friday_button')
+            Button:
+                text: "Saturday"
+                id: saturday_button
+                size_hint_y: .11
+                color: root.active_color if root.saturday_active else root.inactive_color
+                font_size: app.small_font_size
+                on_release: root.toggle_day('saturday_button')
+            Button:
+                text: 'Save Changes'
+                size_hint_y: 0.115
+                on_release: root.save_changes()
+                color: app.text_color
+                font_size: app.small_font_size
 
 
 <ImgBtn>:
     size_hint: None, None
     size: 75, 75  # Adjust size as needed
+
+<SelectableLabel@Button>:
+    # Pass `self.text` to a method in the `EditorPopup` to update the selected media label
+    on_release: app.root.get_screen('alarm_screen').popup.update_media_label(self.text)
+    text: "Test"
+    color: app.text_color
+    font_size: app.small_font_size
+    size_hint_y: None
+    height: dp(50)

@@ -1,1 +1,22 @@
-[{"name": "Test Alarm 1", "timestamp": "2024-05-23T17:06:34", "state": "enabled", "media_path": "/path/to/media1"}]
+[
+    {
+        "name": "Morning Alarm",
+        "time": "07:00 AM",
+        "enabled": true,
+        "media_path": "Media Selected:\n",
+        "repeat": true,
+        "volume": true,
+        "light": true,
+        "days": "0111110"
+    },
+    {
+        "name": "Evening Alarm",
+        "time": "06:00 PM",
+        "enabled": true,
+        "media_path": "Alarm2.mp3",
+        "repeat": true,
+        "volume": true,
+        "light": false,
+        "days": "1000001"
+    }
+]
