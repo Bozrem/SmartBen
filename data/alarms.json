@@ -1,19 +1,19 @@
 [
     {
         "name": "Morning Alarm",
-        "time": "07:00 AM",
-        "enabled": true,
+        "time": "07:00",
+        "enabled": false,
         "media_path": "Media Selected:\n",
         "repeat": true,
-        "volume": true,
+        "volume": false,
         "light": true,
-        "days": "0111110"
+        "days": "0001000"
     },
     {
         "name": "Evening Alarm",
-        "time": "06:00 PM",
+        "time": "13:00",
         "enabled": true,
-        "media_path": "Alarm2.mp3",
+        "media_path": "Media Selected:\n",
         "repeat": true,
         "volume": true,
         "light": false,

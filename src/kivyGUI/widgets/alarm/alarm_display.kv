@@ -143,11 +143,64 @@
             # Time and other
 
             BoxLayout:
+                # Time select
                 orientation: 'horizontal'
                 size_hint_y: .6
+                padding: 20
+                Button:
+                    size_hint_x: .175
+                    id: hour_ten
+                    text: "0"
+                    color: root.inactive_color
+                    font_size: app.large_font_size
+                    background_color: 0, 0, 0, 0
+                    on_release: root.select_digit('hour_ten')
+                Button:
+                    size_hint_x: .175
+                    id: hour_one
+                    text: "7"
+                    color: root.inactive_color
+                    font_size: app.large_font_size
+                    background_color: 0, 0, 0, 0
+                    on_release: root.select_digit('hour_one')
                 Label:
-                    text: "Time Selection"
-                # Time section
+                    size_hint_x: .1
+                    text: ":"
+                    color: app.text_color
+                    font_size: app.large_font_size
+                    background_color: 0, 0, 0, 0
+                Button:
+                    size_hint_x: .175
+                    id: minute_ten
+                    text: "0"
+                    color: root.inactive_color
+                    font_size: app.large_font_size
+                    background_color: 0, 0, 0, 0
+                    on_release: root.select_digit('minute_ten')
+                Button:
+                    size_hint_x: .175
+                    id: minute_one
+                    text: "0"
+                    color: root.inactive_color
+                    font_size: app.large_font_size
+                    background_color: 0, 0, 0, 0
+                    on_release: root.select_digit('minute_one')
+                BoxLayout:
+                    # UP DOWN arrows
+                    size_hint_x: .2
+                    orientation: 'vertical'
+                    ImgBtn:
+                        size_hint_y: .5
+                        on_release: root.change_digit(increment=True)
+                        background_color: 0, 0, 0, 0
+                        id: up_icon
+                        source: 'assets/icons/control/up_light.png'
+                    ImgBtn:
+                        size_hint_y: .5
+                        on_release: root.change_digit(increment=False)
+                        background_color: 0, 0, 0, 0
+                        id: down_icon
+                        source: 'assets/icons/control/down_light.png'
             
             BoxLayout:
                 orientation: 'horizontal'

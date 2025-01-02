@@ -18,6 +18,10 @@ class AlarmDisplay(BoxLayout):
 # for each alarm pulled, pull the json data into a useable AlarmItem object
 # Build each alarm item to a widget and add it to the list
 
+# TODO:
+# Pull and associate actual media paths
+# Get time editor working
+
 class AlarmItem:
     def __init__(self, name, time, enabled: bool, media_path, repeat: bool, volume_gradient: bool, light_gradient: bool, days, refresh_callback):
         self.name = name
@@ -203,6 +207,8 @@ class EditorPopup(Popup):
     friday_active = BooleanProperty(False)
     saturday_active = BooleanProperty(False)
 
+    selected_digit = StringProperty('hour_ten')  # Default selection
+
     def __init__(self, alarm_item, refresh_callback, **kwargs):
         super().__init__(**kwargs)
         self.alarm_item = alarm_item
@@ -210,6 +216,7 @@ class EditorPopup(Popup):
         self.title = "Editing Alarm: " + alarm_item.name
         self.update_inputs()
         self.load_media_list()
+        self.load_time()
         
     def update_media_label(self, selected_text):
         """Updates the media_selected_label with the selected media file name."""
@@ -217,11 +224,37 @@ class EditorPopup(Popup):
         print(f"Media selected: {selected_text}")  # Optional debug print to check selection
 
     def load_media_list(self):
-    # Example: Mock list of media file names
+        # Example: Mock list of media file names
         media_files = ["Alarm1.mp3", "Alarm2.mp3", "Nature.mp3", "Ocean.mp3"]
 
-    # Populate the RecycleView with the media files
+        # Populate the RecycleView with the media files
         self.ids.media_list.data = [{'text': file} for file in media_files]
+
+    def select_digit(self, digit_id):
+        self.selected_digit = digit_id
+        self.update_highlight()
+
+    def update_highlight(self):
+        for digit in ['hour_ten', 'hour_one', 'minute_ten', 'minute_one']:
+            button = self.ids[digit]
+            button.color = self.active_color if digit == self.selected_digit else self.inactive_color
+
+    def change_digit(self, increment=True):
+        digit_id = self.selected_digit
+        button = self.ids[digit_id]
+        value = int(button.text)
+
+        if digit_id.startswith('hour'):
+            max_value = 2 if digit_id == 'hour_ten' else (3 if self.ids.hour_ten.text == '2' else 9)
+        else:
+            max_value = 5 if digit_id == 'minute_ten' else 9
+
+        if increment:
+            value = (value + 1) % (max_value + 1)
+        else:
+            value = (value - 1) % (max_value + 1)
+
+        button.text = str(value)
 
     def toggle_day(self, day_button_id):
         """Toggle the active state of a day button based on its ID."""
@@ -245,6 +278,17 @@ class EditorPopup(Popup):
         self.ids[day_button_id].color = (
             self.active_color if getattr(self, f"{day_button_id.split('_')[0]}_active") else self.inactive_color
         )
+
+    def update_time(self):
+        hours = int(self.ids.hour_ten.text) * 10 + int(self.ids.hour_one.text)
+        minutes = int(self.ids.minute_ten.text) * 10 + int(self.ids.minute_one.text)
+        self.alarm_item.time = f"{hours:02}:{minutes:02}"
+
+    def load_time(self):
+        hours, minutes = map(int, self.alarm_item.time.split(':'))
+        self.ids.hour_ten.text, self.ids.hour_one.text = str(hours // 10), str(hours % 10)
+        self.ids.minute_ten.text, self.ids.minute_one.text = str(minutes // 10), str(minutes % 10)
+
 
     def update_inputs(self):
         self.ids.volume_switch.active = self.alarm_item.volume_gradient
@@ -281,6 +325,7 @@ class EditorPopup(Popup):
             self.wednesday_active, self.thursday_active, self.friday_active,
             self.saturday_active
         ]
+        self.update_time()
 
         # Use the refresh callback to update widgets and save alarms
         if self.refresh_callback:
