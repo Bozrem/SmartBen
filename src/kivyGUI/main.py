@@ -7,14 +7,35 @@ from kivy.uix.slider import Slider
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
+from kivy.config import ConfigParser
+from kivy.uix.image import Image
+from kivy.uix.behaviors import ButtonBehavior
 from widgets.status.status_bar import StatusBar
 from widgets.time.time_display import TimeDisplay
 from widgets.weather.weather_display import WeatherDisplay, WeatherScreen
 from widgets.alarm.alarm_display import AlarmDisplay, AlarmScreen
 from widgets.media.media_display import MediaDisplay, MediaScreen
 
+
 Window.borderless = True
 Window.size = (800, 480)
+
+# -----------------------------
+# Global Helper Classes
+# -----------------------------
+
+class ImgBtn(ButtonBehavior, Image):
+    def __init__(self, on_release=None, **kwargs):
+        super(ImgBtn, self).__init__(**kwargs)
+        self.on_release_callback = on_release  # Store the callable
+
+    def on_release(self):
+        if self.on_release_callback:
+            self.on_release_callback()  # Call the stored function
+
+# -----------------------------
+# Main Page
+# -----------------------------
 
 class MainScreen(Screen):
     def on_enter(self):
@@ -23,13 +44,24 @@ class MainScreen(Screen):
             {'name': 'VolumeWidget', 'position': 'left'},
             {'name': 'BrightnessWidget', 'position': 'left'},
             {'name': 'BluetoothWidget', 'position': 'left'},
-            {'name': 'WeatherWidget', 'position': 'center'},
+            {'name': 'WeatherDisplay', 'position': 'center'},
             {'name': 'SettingsWidget', 'position': 'right'},
         ]
         status_bar.update_widgets(widget_info)
 
 class SmartBen(App):
     def build(self):
+        self.config = ConfigParser()
+        self.config.read('src/kivyGUI/style.ini')
+
+        self.background_color = [float(x) for x in self.config.get('colors', 'background_color').split(',')]
+        self.text_color = [float(x) for x in self.config.get('colors', 'text_color').split(',')]
+        self.large_font_size = self.config.get('fonts', 'large_font_size')
+        self.medium_font_size = self.config.get('fonts', 'medium_font_size')
+        self.medium_small_font_size = self.config.get('fonts', 'medium_small_font_size')
+        self.small_font_size = self.config.get('fonts', 'small_font_size')
+
+
         Builder.load_file('SmartBen.kv')
         Builder.load_file('src/kivyGUI/widgets/weather/weather_display.kv')
         Builder.load_file('src/kivyGUI/widgets/time/time_display.kv')
@@ -46,40 +78,27 @@ class SmartBen(App):
         return sm
     
     def show_volume_popup(self):
-        layout = BoxLayout(orientation='vertical')
-        layout.add_widget(Label(text='Volume'))
-        slider = Slider(min=0, max=100, value=50)
-        layout.add_widget(slider)
-        close_button = Button(text='Close', size_hint_y=0.25)
-        layout.add_widget(close_button)
-
-        slider.bind(value=self.on_volume_change)
-        
-        popup = Popup(title='Volume Control', content=layout, size_hint=(0.8, 0.4))
-        close_button.bind(on_release=popup.dismiss)
+        popup = VolumePopup()
         popup.open()
 
+    # Method to show brightness popup
     def show_brightness_popup(self):
-        layout = BoxLayout(orientation='vertical')
-        layout.add_widget(Label(text='Brightness'))
-        slider = Slider(min=0, max=100, value=50)
-        layout.add_widget(slider)
-        close_button = Button(text='Close', size_hint_y=0.25)
-        layout.add_widget(close_button)
-
-        slider.bind(value=self.on_brightness_change)
-        
-        popup = Popup(title='Brightness Control', content=layout, size_hint=(0.8, 0.4))
-        close_button.bind(on_release=popup.dismiss)
+        popup = BrightnessPopup()
         popup.open()
 
     def on_volume_change(self, instance, value):
         print(f"Volume changed to {value}%")
-        # TODO
+        # TODO integrate with APIs
 
     def on_brightness_change(self, instance, value):
         print(f"Brightness changed to {value}%")
-        # TODO
+        # TODO add command to change this
+
+class VolumePopup(Popup):
+    pass
+
+class BrightnessPopup(Popup):
+    pass
 
 if __name__ == '__main__':
     SmartBen().run()

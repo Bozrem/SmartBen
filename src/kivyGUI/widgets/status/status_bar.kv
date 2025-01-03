@@ -1,7 +1,7 @@
 <StatusBar>:
     canvas.before:
         Color:
-            rgba: 0, 20/255, 50/255, 1  # Adjust the alpha value for transparency
+            rgba: app.background_color  # Adjust the alpha value for transparency
         Rectangle:
             pos: self.pos
             size: self.size
@@ -23,30 +23,37 @@
         orientation: 'rl-tb'
         size_hint_x: 0.3
 
-<VolumeWidget@Button>:
-    background_color: 0, 0, 0, 0
-    text: 'Vol'
-    size_hint_x: .33
+<VolumeWidget@ImgBtn>:
+    size_hint: (.33, 1)
     on_release: app.show_volume_popup()
+    background_color: 0, 0, 0, 0  # Transparent
+    id: volume_icon
+    source: 'assets/icons/volume/high_light.png' 
 
-<BrightnessWidget@Button>:
-    background_color: 0, 0, 0, 0
-    text: 'Bri'
-    size_hint_x: .33
+<BrightnessWidget@ImgBtn>:
+    size_hint: (.33, 1)
     on_release: app.show_brightness_popup()
+    background_color: 0, 0, 0, 0  # Transparent
+    id: brightness_icon
+    source: 'assets/icons/brightness/darkmode_light.png' 
 
-<BluetoothWidget@Button>:
-    background_color: 0, 0, 0, 0
-    text: 'BT'
-    size_hint_x: .33
+<BluetoothWidget@ImgBtn>:
+    size_hint: (.33, 1)
+    # Add Bluetooth Menu
+    background_color: 0, 0, 0, 0  # Transparent
+    id: bluetooth_icon
+    source: 'assets/icons/bluetooth/bluetooth_light.png'
 
-<SettingsWidget@Button>:   
-    background_color: 0, 0, 0, 0
-    text: 'Set'
-    size_hint_x: .33
+<SettingsWidget@ImgBtn>:
+    size_hint: (.33, 1)
+    # Add Settings Screen
+    background_color: 0, 0, 0, 0  # Transparent
+    id: settings_icon
+    source: 'assets/icons/settings/settings_light.png' 
 
-<WeatherWidget@Button>:
-    background_color: 0, 0, 0, 0
-    size_hint: (1, 1)
-    text: "Weather: 69 and Sunny"
-    on_release: app.root.current = 'weather_screen'
+<BackWidget@ImgBtn>:
+    size_hint: (.33, 1)
+    on_release: app.root.current = 'main'
+    background_color: 0, 0, 0, 0  # Transparent
+    id: back_icon
+    source: 'assets/icons/control/back_light.png'

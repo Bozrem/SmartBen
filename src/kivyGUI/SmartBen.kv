@@ -3,7 +3,7 @@
         orientation: 'vertical'
         canvas.before:
             Color:
-                rgba: 0, 20/255, 50/225, 1  # background color
+                rgba: app.background_color  # background color
 
         StatusBar:
             id: status_bar
@@ -20,3 +20,43 @@
             
             AlarmDisplay:
                 size_hint_x: 0.5
+
+
+<VolumePopup@Popup>:
+    title: 'Volume Control'
+    size_hint: 0.8, 0.4
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Volume'
+        Slider:
+            id: volume_slider
+            min: 0
+            max: 100
+            value: 50
+            on_value: app.on_volume_change(*args)
+        Button:
+            text: 'Close'
+            size_hint_y: 0.25
+            on_release: root.dismiss()
+
+<BrightnessPopup@Popup>:
+    title: 'Brightness Control'
+    size_hint: 0.8, 0.4
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Brightness'
+        Slider:
+            id: brightness_slider
+            min: 0
+            max: 100
+            value: 50
+            on_value: app.on_brightness_change(*args)
+        Button:
+            text: 'Close'
+            size_hint_y: 0.25
+            on_release: root.dismiss()
+
+<ImgBtn>:
+    size_hint: None, None

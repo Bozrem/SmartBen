@@ -1,5 +1,11 @@
 #!/bin/sh
 
+: ' Project TODO
+Set a path to the correct spot
+Make code use the path
+
+'
+
 echo "Aquiring newest versions"
 apt -y update
 apt -y upgrade

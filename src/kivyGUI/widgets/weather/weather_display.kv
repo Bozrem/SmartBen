@@ -1,8 +1,11 @@
 <WeatherDisplay>:
     Button:
         size_hint: (1, 1)
-        text: "Weather: 69 and Sunny"
+        text: "Weather: 67 and Sunny"
+        color: app.text_color
+        font_size: app.medium_small_font_size
         on_release: app.root.current = 'weather_screen'
+        background_color: 0, 0, 0, 0 # Transparent
 
 <WeatherScreen>:
     BoxLayout:

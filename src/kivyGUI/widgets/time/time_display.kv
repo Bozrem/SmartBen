@@ -5,7 +5,7 @@
         spacing: 10
         canvas.before:
             Color:
-                rgba: 0, 20/255, 50/255, 1  # Background color
+                rgba: app.background_color
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -13,8 +13,8 @@
         Label:
             id: date_label
             text: 'Loading'
-            color: 200/255, 200/255, 200/255, 1
-            font_size: '30sp'
+            color: app.text_color
+            font_size: app.medium_font_size
             size_hint_y: None
             height: self.texture_size[1]
             halign: 'center'
@@ -22,8 +22,8 @@
         Label:
             id: time_label
             text: 'Loading'
-            color: 200/255, 200/255, 200/255, 1
-            font_size: '120sp'
+            color: app.text_color
+            font_size: app.large_font_size
             size_hint_y: None
             height: self.texture_size[1]
             halign: 'center'
