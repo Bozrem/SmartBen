@@ -24,7 +24,7 @@ class MainScreen(Screen):
             {'name': 'VolumeWidget', 'position': 'left'},
             {'name': 'BrightnessWidget', 'position': 'left'},
             {'name': 'BluetoothWidget', 'position': 'left'},
-            {'name': 'WeatherWidget', 'position': 'center'},
+            {'name': 'WeatherDisplay', 'position': 'center'},
             {'name': 'SettingsWidget', 'position': 'right'},
         ]
         status_bar.update_widgets(widget_info)
@@ -38,6 +38,7 @@ class SmartBen(App):
         self.text_color = [float(x) for x in self.config.get('colors', 'text_color').split(',')]
         self.large_font_size = self.config.get('fonts', 'large_font_size')
         self.medium_font_size = self.config.get('fonts', 'medium_font_size')
+        self.medium_small_font_size = self.config.get('fonts', 'medium_small_font_size')
         self.small_font_size = self.config.get('fonts', 'small_font_size')
 
 

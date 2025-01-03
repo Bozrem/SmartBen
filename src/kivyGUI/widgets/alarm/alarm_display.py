@@ -14,14 +14,6 @@ import os
 class AlarmDisplay(BoxLayout):
     pass
 
-# On enter, pull data from the api for the current alarms
-# for each alarm pulled, pull the json data into a useable AlarmItem object
-# Build each alarm item to a widget and add it to the list
-
-# TODO:
-# Pull and associate actual media paths
-# Get time editor working
-
 class AlarmItem:
     def __init__(self, name, time, enabled: bool, media_path, repeat: bool, volume_gradient: bool, light_gradient: bool, days, refresh_callback):
         self.name = name
@@ -31,8 +23,7 @@ class AlarmItem:
         self.repeat = repeat
         self.volume_gradient = volume_gradient
         self.light_gradient = light_gradient
-        # Directly use the passed-in days array
-        self.days = days  # Ensure `days` is a list with 7 boolean values
+        self.days = days # This would already be in list format
         self.refresh_callback = refresh_callback
         print("Initialized AlarmItem:", self.days)
 
@@ -40,7 +31,7 @@ class AlarmItem:
     def from_json(cls, json_data, callback):
         # Parse JSON data
         data = json.loads(json_data)
-        # Generate days list as boolean values for each character in `data["days"]`
+        # Generate days list as boolean values for each character in data["days"]
         days = [char == "1" for char in data["days"]]
 
         # Create and return an instance of AlarmItem
@@ -57,10 +48,7 @@ class AlarmItem:
         )
 
     def to_widget(self):
-        """Convert alarm data into a widget-friendly dictionary format."""
-        # Ensure that `days` contains 7 items to match each day of the week
-        assert len(self.days) == 7, "Days list should contain exactly 7 items."
-
+        # Convert data for use in widget
         return {
             'alarm_name': self.name,
             'alarm_time': self.time,
@@ -75,14 +63,12 @@ class AlarmItem:
             'saturday_active': self.days[6]
         }
     
-
 class AlarmItemWidget(RecycleDataViewBehavior, BoxLayout):
-    alarm_item = ObjectProperty()  # Holds the associated AlarmItem instance
+    alarm_item = ObjectProperty() # Holds the AlarmItem
     alarm_name = StringProperty()
     alarm_time = StringProperty()
     alarm_enabled = BooleanProperty()
 
-        # Properties for each day
     sunday_active = BooleanProperty(False)
     monday_active = BooleanProperty(False)
     tuesday_active = BooleanProperty(False)
@@ -91,12 +77,10 @@ class AlarmItemWidget(RecycleDataViewBehavior, BoxLayout):
     friday_active = BooleanProperty(False)
     saturday_active = BooleanProperty(False)
 
-        # Define colors for active/inactive days
-    active_color = (0.5, 0.8, 1, 1)  # Light blue for active
-    inactive_color = (0.4, 0.4, 0.4, 1)  # Dark gray for inactive
+    active_color = (0.5, 0.8, 1, 1)  # Light blue
+    inactive_color = (0.4, 0.4, 0.4, 1)  # Dark gray
 
     def update_day_colors(self):
-        """Update the font color of each day label based on its active/inactive state."""
         self.ids.sunday.color = self.active_color if self.sunday_active else self.inactive_color
         self.ids.monday.color = self.active_color if self.monday_active else self.inactive_color
         self.ids.tuesday.color = self.active_color if self.tuesday_active else self.inactive_color
@@ -106,15 +90,13 @@ class AlarmItemWidget(RecycleDataViewBehavior, BoxLayout):
         self.ids.saturday.color = self.active_color if self.saturday_active else self.inactive_color
 
     def toggle_enabled(self, is_active):
-        """Toggle the enabled state of the alarm and update the AlarmItem instance."""
         self.alarm_enabled = is_active
-        if self.alarm_item is not None:  # Check if alarm_item is properly assigned
+        if self.alarm_item is not None:  # Ensure the object is assigned
             self.alarm_item.enabled = is_active
             if hasattr(self.alarm_item, 'refresh_callback'):
                 self.alarm_item.refresh_callback()  # Refresh data if callback is set
         else:
             print("Warning: alarm_item is None in toggle_enabled")
-
 
 class AlarmScreen(Screen):
     def on_enter(self):
@@ -192,11 +174,11 @@ class ImgBtn(ButtonBehavior, Image):
             self.on_release_callback()  # Call the stored function
 
 class EditorPopup(Popup):
-    alarm_item = ObjectProperty(None)  # Reference to the alarm item being edited
-    refresh_callback = ObjectProperty(None)  # Callback to refresh the list
+    alarm_item = ObjectProperty(None) # Reference to the alarm item being edited
+    refresh_callback = ObjectProperty(None) # Callback to refresh the list
 
-    active_color = (1, 1, 1, 1)  # Example color for active state (white)
-    inactive_color = (0.5, 0.5, 0.5, 1)  # Example color for inactive state (gray)
+    active_color = (1, 1, 1, 1)
+    inactive_color = (0.5, 0.5, 0.5, 1)
 
     # Properties to track each day’s active state
     sunday_active = BooleanProperty(False)
@@ -207,27 +189,28 @@ class EditorPopup(Popup):
     friday_active = BooleanProperty(False)
     saturday_active = BooleanProperty(False)
 
-    selected_digit = StringProperty('hour_ten')  # Default selection
+    selected_digit = StringProperty('hour_ten')
 
     def __init__(self, alarm_item, refresh_callback, **kwargs):
         super().__init__(**kwargs)
         self.alarm_item = alarm_item
         self.refresh_callback = refresh_callback
         self.title = "Editing Alarm: " + alarm_item.name
+        self.update_media_label(alarm_item.media_path)
         self.update_inputs()
         self.load_media_list()
         self.load_time()
         
     def update_media_label(self, selected_text):
-        """Updates the media_selected_label with the selected media file name."""
-        self.ids.media_selected_label.text = selected_text  # Update the label text
-        print(f"Media selected: {selected_text}")  # Optional debug print to check selection
+        self.ids.media_selected_label.text = selected_text
 
     def load_media_list(self):
-        # Example: Mock list of media file names
-        media_files = ["Alarm1.mp3", "Alarm2.mp3", "Nature.mp3", "Ocean.mp3"]
+        media_dir = "/home/bozrem/Projects/SmartBen/data/media" # TODO PATH
+        if os.path.exists(media_dir):
+            media_files = [f for f in os.listdir(media_dir) if f.endswith('.mp3')]
+        else:
+            media_files = ["No media found"]
 
-        # Populate the RecycleView with the media files
         self.ids.media_list.data = [{'text': file} for file in media_files]
 
     def select_digit(self, digit_id):
@@ -244,6 +227,7 @@ class EditorPopup(Popup):
         button = self.ids[digit_id]
         value = int(button.text)
 
+        # Ima be real, this is ChatGPT magic, I would've probably use a bunch of elif
         if digit_id.startswith('hour'):
             max_value = 2 if digit_id == 'hour_ten' else (3 if self.ids.hour_ten.text == '2' else 9)
         else:
@@ -257,8 +241,7 @@ class EditorPopup(Popup):
         button.text = str(value)
 
     def toggle_day(self, day_button_id):
-        """Toggle the active state of a day button based on its ID."""
-        # Access the button using the ID
+        # TODO Make this not stupid
         if day_button_id == 'sunday_button':
             self.sunday_active = not self.sunday_active
         elif day_button_id == 'monday_button':
@@ -274,7 +257,6 @@ class EditorPopup(Popup):
         elif day_button_id == 'saturday_button':
             self.saturday_active = not self.saturday_active
 
-        # Force a re-render to apply color changes
         self.ids[day_button_id].color = (
             self.active_color if getattr(self, f"{day_button_id.split('_')[0]}_active") else self.inactive_color
         )
@@ -294,8 +276,8 @@ class EditorPopup(Popup):
         self.ids.volume_switch.active = self.alarm_item.volume_gradient
         self.ids.light_switch.active = self.alarm_item.light_gradient
         self.ids.repeat_switch.active = self.alarm_item.repeat
-        """Initialize button states based on `AlarmItem.days`."""
-        # Set each button's active state from `self.alarm_item.days`
+
+        # Fill from the alarm item's day list
         self.sunday_active = self.alarm_item.days[0]
         self.monday_active = self.alarm_item.days[1]
         self.tuesday_active = self.alarm_item.days[2]
@@ -314,7 +296,6 @@ class EditorPopup(Popup):
         self.ids.saturday_button.color = self.active_color if self.saturday_active else self.inactive_color
 
     def save_changes(self):
-        """Save the changes made in the editor and refresh the alarm list."""
         # Update the alarm item's properties based on the current inputs
         self.alarm_item.volume_gradient = self.ids.volume_switch.active
         self.alarm_item.light_gradient = self.ids.light_switch.active
@@ -329,7 +310,7 @@ class EditorPopup(Popup):
 
         # Use the refresh callback to update widgets and save alarms
         if self.refresh_callback:
-            self.refresh_callback()  # Refresh the alarm list UI
+            self.refresh_callback()
 
         # Close the editor popup
         self.dismiss()
