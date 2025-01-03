@@ -23,52 +23,37 @@
         orientation: 'rl-tb'
         size_hint_x: 0.3
 
-<VolumeWidget@Button>:
-    size_hint_x: .33
+<VolumeWidget@ImgBtn>:
+    size_hint: (.33, 1)
     on_release: app.show_volume_popup()
     background_color: 0, 0, 0, 0  # Transparent
-    Image:
-        id: volume_icon
-        source: 'assets/icons/volume/high_light.png' 
-        size: self.parent.width-5, self.parent.height-5
-        center: self.parent.center
+    id: volume_icon
+    source: 'assets/icons/volume/high_light.png' 
 
-<BrightnessWidget@Button>:
-    size_hint_x: .33
+<BrightnessWidget@ImgBtn>:
+    size_hint: (.33, 1)
     on_release: app.show_brightness_popup()
     background_color: 0, 0, 0, 0  # Transparent
-    Image:
-        id: brightness_icon
-        source: 'assets/icons/brightness/darkmode_light.png' 
-        size: self.parent.width-5, self.parent.height-5
-        center: self.parent.center
+    id: brightness_icon
+    source: 'assets/icons/brightness/darkmode_light.png' 
 
-<BluetoothWidget@Button>:
-    size_hint_x: .33
+<BluetoothWidget@ImgBtn>:
+    size_hint: (.33, 1)
     # Add Bluetooth Menu
     background_color: 0, 0, 0, 0  # Transparent
-    Image:
-        id: bluetooth_icon
-        source: 'assets/icons/bluetooth/bluetooth_light.png' 
-        size: self.parent.width-5, self.parent.height-5
-        center: self.parent.center
+    id: bluetooth_icon
+    source: 'assets/icons/bluetooth/bluetooth_light.png'
 
-<SettingsWidget@Button>:
-    size_hint_x: .33
+<SettingsWidget@ImgBtn>:
+    size_hint: (.33, 1)
     # Add Settings Screen
     background_color: 0, 0, 0, 0  # Transparent
-    Image:
-        id: settings_icon
-        source: 'assets/icons/settings/settings_light.png' 
-        size: self.parent.width-5, self.parent.height-5
-        center: self.parent.center
+    id: settings_icon
+    source: 'assets/icons/settings/settings_light.png' 
 
-<BackWidget@Button>:
-    size_hint_x: .33
+<BackWidget@ImgBtn>:
+    size_hint: (.33, 1)
     on_release: app.root.current = 'main'
     background_color: 0, 0, 0, 0  # Transparent
-    Image:
-        id: settings_icon
-        source: 'assets/icons/control/back_light.png' 
-        size: self.parent.width-5, self.parent.height-5
-        center: self.parent.center
+    id: back_icon
+    source: 'assets/icons/control/back_light.png'

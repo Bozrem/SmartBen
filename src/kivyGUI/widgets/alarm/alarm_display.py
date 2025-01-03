@@ -2,8 +2,6 @@ from kivy.uix.recycleview import RecycleView
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
-from kivy.uix.image import Image
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.properties import StringProperty, BooleanProperty, ObjectProperty
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.textinput import TextInput
@@ -118,7 +116,22 @@ class AlarmScreen(Screen):
         self.popup.open()
     
     def add_alarm(self):
-        pass
+        # Create a default AlarmItem
+        default_alarm = AlarmItem(
+            name=f"Alarm {len(self.AlarmList) + 1}",
+            time="07:00",
+            enabled=True,
+            media_path="alarm.mp3",  
+            repeat=False,
+            volume_gradient=True,
+            light_gradient=True,
+            days=[False] * 7,  # No days selected
+            refresh_callback=self.save_and_reload,
+        )
+        
+        # Add to list and load in editor
+        self.AlarmList.append(default_alarm)
+        self.open_editor(default_alarm)
 
     def load_alarm_list(self):
     # Define the path to the alarms.json file
@@ -163,15 +176,6 @@ class AlarmScreen(Screen):
             print(f"Successfully saved alarms to {file_path}.")
         except Exception as e:
             print(f"Error saving alarms: {e}")
-
-class ImgBtn(ButtonBehavior, Image):
-    def __init__(self, on_release=None, **kwargs):
-        super(ImgBtn, self).__init__(**kwargs)
-        self.on_release_callback = on_release  # Store the callable
-
-    def on_release(self):
-        if self.on_release_callback:
-            self.on_release_callback()  # Call the stored function
 
 class EditorPopup(Popup):
     alarm_item = ObjectProperty(None) # Reference to the alarm item being edited

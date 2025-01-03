@@ -8,14 +8,34 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.config import ConfigParser
+from kivy.uix.image import Image
+from kivy.uix.behaviors import ButtonBehavior
 from widgets.status.status_bar import StatusBar
 from widgets.time.time_display import TimeDisplay
 from widgets.weather.weather_display import WeatherDisplay, WeatherScreen
 from widgets.alarm.alarm_display import AlarmDisplay, AlarmScreen
 from widgets.media.media_display import MediaDisplay, MediaScreen
 
+
 Window.borderless = True
 Window.size = (800, 480)
+
+# -----------------------------
+# Global Helper Classes
+# -----------------------------
+
+class ImgBtn(ButtonBehavior, Image):
+    def __init__(self, on_release=None, **kwargs):
+        super(ImgBtn, self).__init__(**kwargs)
+        self.on_release_callback = on_release  # Store the callable
+
+    def on_release(self):
+        if self.on_release_callback:
+            self.on_release_callback()  # Call the stored function
+
+# -----------------------------
+# Main Page
+# -----------------------------
 
 class MainScreen(Screen):
     def on_enter(self):

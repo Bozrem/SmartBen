@@ -69,7 +69,7 @@
             viewclass: 'AlarmItemWidget'
             size_hint_y: 0.9
             RecycleBoxLayout:
-                default_size: None, dp(50)
+                default_size: None, dp(75)
                 default_size_hint: 1, None
                 size_hint_y: None
                 height: self.minimum_height
@@ -84,21 +84,21 @@
     spacing: 10
     Label:
         text: root.alarm_name
-        size_hint_x: 0.25
+        size_hint_x: 0.2
         color: app.text_color
         font_size: app.small_font_size
     Label:
         text: root.alarm_time
-        size_hint_x: 0.25
+        size_hint_x: 0.2
         color: app.text_color
         font_size: app.small_font_size
-    # Letters total a .28 size hint x
+    # Letters total a .35 size hint x
     Label:
         text: "S"
         id: sunday
         font_size: app.small_font_size
         color: root.active_color if root.sunday_active else root.inactive_color
-        size_hint_x: .04
+        size_hint_x: .05
     Label:
         text: "M"
         id: monday
@@ -135,17 +135,24 @@
         font_size: app.small_font_size
         color: root.active_color if root.saturday_active else root.inactive_color
         size_hint_x: .04
+    Label:
+        # Filler
+        size_hint_x: .04
     Switch:
         id: enabled
         size_hint_x: .1
         active: root.alarm_enabled  # Bind to the alarm_enabled property
         on_active: root.toggle_enabled(self.active)  # Call toggle_enabled when switch state changes
-    Button:
-        text: "Edit"
-        size_hint_x: 0.1
+    Label:
+        # Filler
+        size_hint_x: .03
+    ImgBtn:
+        size_hint: (.15, .8)
+        id: edit_icon
+        source: 'assets/icons/settings/edit_light.png'
         on_release: app.root.get_screen('alarm_screen').open_editor(self.parent.alarm_item)
-        color: app.text_color
-        font_size: app.small_font_size
+        background_color: 0, 0, 0, 0  # Transparent
+
 
 <EditorPopup@Popup>:
     title: 'Loading Title'
@@ -360,9 +367,7 @@
                 font_size: app.small_font_size
 
 
-<ImgBtn>:
-    size_hint: None, None
-    size: 75, 75  # Adjust size as needed
+
 
 <SelectableLabel@Button>:
     # Pass `self.text` to a method in the `EditorPopup` to update the selected media label
